@@ -1,0 +1,74 @@
+[
+  {
+    "id": "p1",
+    "name": "Panier de légumes de saison",
+    "producer": "Ferme des Tilleuls",
+    "price": 1500,
+    "unit": "le panier (4 kg)",
+    "image": "vegetables.png",
+    "emoji": "🥕"
+  },
+  {
+    "id": "p2",
+    "name": "Pommes Reinette",
+    "producer": "Verger de la Source",
+    "price": 380,
+    "unit": "le kilo",
+    "image": "apples.png",
+    "emoji": "🍎"
+  },
+  {
+    "id": "p3",
+    "name": "Jus de pomme artisanal",
+    "producer": "Verger de la Source",
+    "price": 450,
+    "unit": "la bouteille (1 L)",
+    "image": "juice.png",
+    "emoji": "🧃"
+  },
+  {
+    "id": "p4",
+    "name": "Miel de fleurs",
+    "producer": "Miellerie du Coteau",
+    "price": 990,
+    "unit": "le pot (500 g)",
+    "image": "honey.png",
+    "emoji": "🍯"
+  },
+  {
+    "id": "p5",
+    "name": "Tomme fermière",
+    "producer": "Fromagerie Belle-Vue",
+    "price": 1250,
+    "unit": "la pièce (500 g)",
+    "image": "cheese.png",
+    "emoji": "🧀"
+  },
+  {
+    "id": "p6",
+    "name": "Œufs plein air",
+    "producer": "Ferme des Tilleuls",
+    "price": 360,
+    "unit": "la boîte de 6",
+    "image": "eggs.png",
+    "emoji": "🥚"
+  },
+  {
+    "id": "p7",
+    "name": "Pain au levain",
+    "producer": "Fournil du Moulin",
+    "price": 480,
+    "unit": "la miche (1 kg)",
+    "image": "bread.png",
+    "emoji": "🍞"
+  },
+  {
+    "id": "p8",
+    "name": "Fraises gariguette",
+    "producer": "Ferme des Tilleuls",
+    "price": 650,
+    "unit": "la barquette (500 g)",
+    "image": "strawberries.png",
+    "emoji": "🍓"
+  }
+]
