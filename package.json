@@ -1,0 +1,46 @@
+{
+  "name": "circuitcourt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CircuitCourt: order directly from local farmers, pick up at the farm. Training project for the GitOps and CI/CD module.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "node --watch src/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "biome ci .",
+    "lint:fix": "biome check --write .",
+    "prepare": "husky || true",
+    "gitleaks": "node tools/gitleaks.ts history",
+    "observatory": "node tools/observatory.ts",
+    "weight": "node tools/weight.ts",
+    "images:optimize": "node tools/images.ts",
+    "changelog": "git-cliff -o CHANGELOG.md"
+  },
+  "dependencies": {
+    "express": "4.19.2",
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@mdn/mdn-http-observatory": "^1.7.1",
+    "@types/express": "^4.17.25",
+    "@types/node": "^24.19.2",
+    "@types/supertest": "^7.2.1",
+    "@vitest/coverage-v8": "^5.0.5",
+    "git-cliff": "^2.14.2",
+    "husky": "^9.1.7",
+    "sharp": "^0.35.5",
+    "supertest": "^7.3.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}
