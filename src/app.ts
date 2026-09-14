@@ -47,7 +47,7 @@ export function createApp() {
   app.post("/api/orders", (req, res) => {
     const { customer, lines, slot } = req.body ?? {};
     const order = placeOrder(customer, lines, slot);
-    sendConfirmation(order);
+    sendConfirmation(order, process.env.MAIL_API_KEY);
     res.status(201).json({ id: order.id, total: order.quote.total });
   });
 
