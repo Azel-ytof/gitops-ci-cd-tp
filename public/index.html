@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CircuitCourt – vos producteurs en direct</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/vendor/lodash.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>🌾 CircuitCourt</h1>
+      <p>Commandez en direct aux producteurs de votre région, retirez votre panier à la ferme.</p>
+    </header>
+    <main>
+      <section aria-labelledby="products-title">
+        <h2 id="products-title">Les produits de la semaine</h2>
+        <div id="products" class="grid"></div>
+      </section>
+      <aside aria-labelledby="cart-title">
+        <h2 id="cart-title">Mon panier</h2>
+        <ul id="cart"></ul>
+        <dl id="quote"></dl>
+        <form id="order">
+          <label>Nom <input name="name" required autocomplete="name" /></label>
+          <label>E-mail <input name="email" type="email" required autocomplete="email" /></label>
+          <label>Retrait
+            <select name="slot" id="slots" required></select>
+          </label>
+          <button type="submit">Commander</button>
+        </form>
+        <p id="message" role="status"></p>
+      </aside>
+    </main>
+    <footer>CircuitCourt · Les Producteurs du Coin · projet fictif</footer>
+    <script src="/app.js"></script>
+  </body>
+</html>

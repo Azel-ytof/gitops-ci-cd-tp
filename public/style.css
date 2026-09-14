@@ -1,0 +1,82 @@
+:root {
+  --green: #2f6b3a;
+  --cream: #fbf8f1;
+  --text: #2b2b2b;
+  font-family: system-ui, sans-serif;
+  color: var(--text);
+  background: var(--cream);
+}
+body {
+  margin: 0;
+}
+header {
+  background: var(--green);
+  color: white;
+  padding: 1rem 2rem;
+}
+header h1 {
+  margin: 0;
+}
+main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.product {
+  background: white;
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+}
+.product img {
+  width: 100%;
+  border-radius: 6px;
+}
+.product h3 {
+  margin: 0.5rem 0 0;
+  font-size: 1.05rem;
+}
+.producer {
+  color: #666;
+  margin: 0.2rem 0;
+}
+.price span {
+  color: #666;
+  font-size: 0.85rem;
+}
+button {
+  background: var(--green);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+aside form {
+  display: grid;
+  gap: 0.6rem;
+}
+aside label {
+  display: grid;
+  gap: 0.2rem;
+}
+#quote {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+footer {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}
+@media (max-width: 800px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
