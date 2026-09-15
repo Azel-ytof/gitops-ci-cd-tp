@@ -1,0 +1,35 @@
+# Le pipeline de CircuitCourt. Pour l'instant, il ne fait que lancer les tests.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  # TODO TP 1 : lancer aussi le pipeline sur chaque pull request (pull_request:)
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # TODO TP 1 : tester sous Node 22 et sous Node 24 avec une matrice :
+    #   strategy:
+    #     matrix:
+    #       node: [22, 24]
+    # puis node-version: ${{ matrix.node }} à la place de 24
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm test
+
+  # TODO TP 1 : un job « lint » qui lance npm run lint (copiez le job test et changez la dernière ligne)
+
+  # TODO TP 1 : un job « build » qui attend lint et test (needs: [lint, test]), lance npm run build,
+  # puis garde ce qu'il faut pour lancer l'application avec l'action actions/upload-artifact@v7 :
+  #   with:
+  #     name: circuitcourt
+  #     path: |
+  #       dist
+  #       public
+  #       node_modules
+  #       package.json
