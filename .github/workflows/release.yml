@@ -1,0 +1,19 @@
+# release-please lit les commits (Conventional Commits) et tient à jour une pull request « chore(main): release x.y.z »
+# qui augmente la version et complète CHANGELOG.md. La fusionner crée le tag et la release (TP 4).
+name: Release
+
+on:
+  # TODO TP 4 : à chaque push sur main
+  workflow_dispatch:
+
+permissions:
+  contents: write # créer le tag et la release
+  pull-requests: write # ouvrir la pull request de release
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          release-type: node

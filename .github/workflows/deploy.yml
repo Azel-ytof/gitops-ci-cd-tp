@@ -1,0 +1,30 @@
+# Appliquer ce que décrit deploy/compose.yml, sur le runner de votre poste (TP 4).
+# Votre poste joue le rôle du serveur de production : http://localhost:8088
+name: Deploy
+
+on:
+  # TODO TP 4 : à chaque push sur main qui modifie le dossier deploy/ :
+  #   push:
+  #     branches: [main]
+  #     paths: ["deploy/**"]
+  workflow_dispatch: # et à la demande (bouton « Run workflow »)
+
+permissions:
+  contents: read
+  packages: read # télécharger l'image depuis ghcr.io, sans pouvoir la modifier
+
+jobs:
+  production:
+    runs-on: [self-hosted, local]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply deploy/compose.yml
+        env:
+          MAIL_API_KEY: ${{ secrets.MAIL_API_KEY }}
+        # --wait : attendre que l'application réponde (healthcheck), sinon le job échoue
+        run: docker compose -f deploy/compose.yml up -d --wait

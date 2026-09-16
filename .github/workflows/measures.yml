@@ -1,0 +1,39 @@
+# Mesurer l'impact de la page d'accueil et de l'image Docker (TP 5).
+name: Measures
+
+on:
+  # TODO TP 5 : à chaque push sur main et à chaque pull request
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  impact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run build
+      - name: Start the application
+        # TODO TP 5 : si GreenIT échoue avec « launchAnalyse is not defined », la CSP de helmet bloque son script.
+        # Pour la mesure seulement : ajoutez ici env: CSP: report-only, et dans src/app.ts, à contentSecurityPolicy :
+        #   reportOnly: process.env.CSP === "report-only",
+        run: |
+          npm start &
+          curl --retry 10 --retry-connrefused --retry-delay 1 --silent http://localhost:3000/health
+      - name: EcoIndex of the home page
+        uses: ythirion/greenit-analysis-action@v0.1.2
+        with:
+          min-ecoindex: "80" # l'objectif de l'équipe : au moins 80 sur 100
+          retention-days: "7"
+      - name: Build the image
+        if: always() # même si l'EcoIndex est trop bas, on veut le poids de l'image
+        run: docker build -t circuitcourt:measure .
+      - name: Weight of the artifacts
+        if: always()
+        # TODO TP 5 : un budget de 300 Mo pour l'image : npm run weight -- circuitcourt:measure 300
+        run: npm run weight -- circuitcourt:measure

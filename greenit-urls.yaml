@@ -1,0 +1,5 @@
+# Pages analysées par GreenIT-Analysis (EcoIndex)
+- name: "Home"
+  url: "http://localhost:3000/"
+  # Les produits arrivent en JavaScript : on attend leurs images avant de mesurer
+  waitForSelector: ".product img"

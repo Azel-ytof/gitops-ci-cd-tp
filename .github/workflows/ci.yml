@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
+      # TODO TP 2 : npm run test:coverage, pour que le pipeline échoue sous les seuils de couverture
       - run: npm test
 
   # TODO TP 1 : un job « lint » qui lance npm run lint (copiez le job test et changez la dernière ligne)

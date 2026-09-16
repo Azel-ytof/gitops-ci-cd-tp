@@ -1,0 +1,56 @@
+# Les secrets, les dépendances et les en-têtes HTTP (TP 3).
+name: Security
+
+on:
+  # TODO TP 3 : à chaque push sur main et à chaque pull request
+  workflow_dispatch:
+
+# TODO TP 3 : le jeton GITHUB_TOKEN de ce workflow ne doit pouvoir que lire le dépôt :
+#   permissions:
+#     contents: read
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        # TODO TP 3 : par défaut, seul le dernier commit est récupéré. Or un secret supprimé reste dans les anciens :
+        # récupérez tout l'historique (with: fetch-depth: 0)
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm run gitleaks
+
+  dependencies:
+    runs-on: ubuntu-latest
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      # Les failles connues des dépendances livrées en production (pas des outils de développement)
+      - run: npm audit --omit=dev --audit-level=high
+      - name: Snyk (only if the SNYK_TOKEN secret exists)
+        if: env.SNYK_TOKEN != ''
+        uses: snyk/actions/node@v1.0.0
+        with:
+          args: --severity-threshold=high
+
+  http-headers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run build
+      - name: Start the application
+        run: |
+          npm start &
+          curl --retry 10 --retry-connrefused --retry-delay 1 --silent http://localhost:3000/health
+      - name: Mozilla Observatory (60/100 at least, grade C+)
+        run: npm run observatory -- circuitcourt.localhost:3000 60

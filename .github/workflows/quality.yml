@@ -1,0 +1,28 @@
+# L'analyse SonarQube, sur le runner de votre poste (TP 2).
+name: Quality
+
+on:
+  # TODO TP 2 : lancer l'analyse à chaque push sur main et à chaque pull request, comme dans ci.yml.
+  # Pour l'instant, elle ne se lance qu'à la main (onglet Actions, bouton « Run workflow »).
+  workflow_dispatch:
+
+jobs:
+  sonar:
+    # TODO TP 2 : SonarQube tourne sur votre poste : le job doit tourner sur votre runner, runs-on: [self-hosted, local]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # tout l'historique : SonarQube repère le « nouveau code »
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: npm ci
+      # TODO TP 2 : les tests avec le rapport de couverture (npm run test:coverage), à la place de npm test
+      - run: npm test
+      - uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          # TODO TP 2 : le jeton est confidentiel : ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ""
+          # TODO TP 2 : l'adresse du serveur ne l'est pas : ${{ vars.SONAR_HOST_URL }}
+          SONAR_HOST_URL: ""

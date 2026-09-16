@@ -1,0 +1,35 @@
+# Outillage local : un runner GitHub Actions auto-hébergé et un serveur SonarQube.
+# Copiez .env.example en .env, remplissez-le, puis : docker compose up -d   (depuis le dossier infra)
+name: circuitcourt-tools
+
+services:
+  sonarqube:
+    image: sonarqube:26.10.0.133078-community
+    ports:
+      - "9000:9000"
+    environment:
+      # Évite d'avoir à régler vm.max_map_count sur le poste (Elasticsearch embarqué)
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+
+  runner:
+    image: myoung34/github-runner:2.338.0-ubuntu-noble
+    environment:
+      REPO_URL: https://github.com/${GITHUB_OWNER}/circuitcourt
+      RUNNER_TOKEN: ${RUNNER_TOKEN}
+      RUNNER_NAME: runner-${GITHUB_OWNER}
+      RUNNER_SCOPE: repo
+      LABELS: local
+      RUNNER_WORKDIR: /tmp/runner/work
+      DISABLE_AUTO_UPDATE: "true"
+    volumes:
+      # Le runner pilote le Docker de votre poste (pour construire des images)
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - sonarqube
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:

@@ -1,0 +1,21 @@
+# Ce qui tourne en production : quelle image, quelle version, quelle configuration.
+# Déployer, c'est modifier ce fichier par une pull request. Revenir en arrière, c'est annuler cette pull request (Revert).
+name: circuitcourt-production
+
+services:
+  circuitcourt:
+    # TODO TP 4 : votre image. Remplacez OWNER par votre identifiant GitHub (en minuscules),
+    # et sha-XXXXXXX par le tag à déployer (page du dépôt > Packages > circuitcourt).
+    image: ghcr.io/OWNER/circuitcourt:sha-XXXXXXX
+    ports:
+      - "8088:3000" # l'application en production : http://localhost:8088
+    environment:
+      TZ: Europe/Paris
+      MAIL_API_KEY: ${MAIL_API_KEY:-}
+    restart: unless-stopped
+    # Docker vérifie que l'application répond ; le déploiement attend qu'elle soit prête
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
