@@ -5,32 +5,56 @@ on:
   push:
     branches: [main]
   # TODO TP 1 : lancer aussi le pipeline sur chaque pull request (pull_request:)
+  pull_request:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     # TODO TP 1 : tester sous Node 22 et sous Node 24 avec une matrice :
-    #   strategy:
-    #     matrix:
-    #       node: [22, 24]
+    strategy:
+      matrix:
+        node: [24, 26]
     # puis node-version: ${{ matrix.node }} à la place de 24
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      # TODO TP 2 : npm run test:coverage, pour que le pipeline échoue sous les seuils de couverture
+      - run: npm test
+
+  # TODO TP 1 : un job « lint » qui lance npm run lint (copiez le job test et changez la dernière ligne)
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [24, 26]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm ci
+      - run: npm run lint
+
+  # TODO TP 1 : un job « build » qui attend lint et test (needs: [lint, test]), lance npm run build,
+  # puis garde ce qu'il faut pour lancer l'application avec l'action actions/upload-artifact@v7 :
+
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 24
       - run: npm ci
-      # TODO TP 2 : npm run test:coverage, pour que le pipeline échoue sous les seuils de couverture
-      - run: npm test
-
-  # TODO TP 1 : un job « lint » qui lance npm run lint (copiez le job test et changez la dernière ligne)
-
-  # TODO TP 1 : un job « build » qui attend lint et test (needs: [lint, test]), lance npm run build,
-  # puis garde ce qu'il faut pour lancer l'application avec l'action actions/upload-artifact@v7 :
-  #   with:
-  #     name: circuitcourt
-  #     path: |
-  #       dist
-  #       public
-  #       node_modules
-  #       package.json
+      - run: npm run build
+        with:
+          name: circuitcourt
+          path: |
+            dist
+            public
+            node_modules
+            package.json
