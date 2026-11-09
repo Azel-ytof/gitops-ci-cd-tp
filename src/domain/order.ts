@@ -18,7 +18,7 @@ const orders = new Map<string, Order>();
 let counter = 0;
 
 function checkCustomer(customer: Customer): void {
-  if (!customer || typeof customer.name !== "string" || customer.name.trim().length == 0) {
+  if (!customer || typeof customer.name !== "string" || customer.name.trim().length === 0) {
     throw new InvalidOrder("Le nom du client est obligatoire");
   }
   if (typeof customer.email !== "string" || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(customer.email)) {
