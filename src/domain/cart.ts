@@ -39,7 +39,7 @@ export function subtotal(lines: Line[]): number {
 
 /** RG-03 : 5 % de remise dès 50 € d'achats, arrondie au centime. */
 export function discount(amount: number): number {
-  return amount > DISCOUNT_THRESHOLD ? Math.round(amount * 0.05) : 0;
+  return amount >= DISCOUNT_THRESHOLD ? Math.round(amount * 0.05) : 0;
 }
 
 /** RG-04 : 2 € de frais de retrait sous 30 €, gratuit à partir de 30 €. */
