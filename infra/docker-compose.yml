@@ -17,7 +17,7 @@ services:
   runner:
     image: myoung34/github-runner:2.338.0-ubuntu-noble
     environment:
-      REPO_URL: https://github.com/${GITHUB_OWNER}/circuitcourt
+      REPO_URL: https://github.com/${GITHUB_OWNER}/gitops-ci-cd-tp
       RUNNER_TOKEN: ${RUNNER_TOKEN}
       RUNNER_NAME: runner-${GITHUB_OWNER}
       RUNNER_SCOPE: repo
