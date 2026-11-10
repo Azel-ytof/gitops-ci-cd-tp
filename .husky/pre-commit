@@ -2,4 +2,6 @@
 # TODO TP 1 : une vérification par ligne :
 #   - Biome, sur les fichiers indexés seulement : npx biome check --staged --no-errors-on-unmatched
 #   - les tests : npm test
+npx biome check --staged --no-errors-on-unmatched
+npm test
 # TODO TP 3 : chercher des secrets dans les fichiers indexés : node tools/gitleaks.ts staged
