@@ -5,3 +5,4 @@
 npx biome check --staged --no-errors-on-unmatched
 npm test
 # TODO TP 3 : chercher des secrets dans les fichiers indexés : node tools/gitleaks.ts staged
+node tools/gitleaks.ts staged
