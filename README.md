@@ -1,5 +1,7 @@
 # CircuitCourt
 
+TEST
+
 Order directly from local farmers, pick up your basket at the farm.
 Training project for the **GitOps and CI/CD** module (Les Producteurs du Coin and Lambda Studio are fictional).
 
