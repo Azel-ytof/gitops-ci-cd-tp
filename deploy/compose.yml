@@ -6,7 +6,7 @@ services:
   circuitcourt:
     # TODO TP 4 : votre image. Remplacez OWNER par votre identifiant GitHub (en minuscules),
     # et sha-XXXXXXX par le tag à déployer (page du dépôt > Packages > circuitcourt).
-    image: ghcr.io/azel-ytof/circuitcourt:sha-48a9e76
+    image: ghcr.io/azel-ytof/circuitcourt:sha-00000
     ports:
       - "8088:3000" # l'application en production : http://localhost:8088
     environment:
