@@ -3,14 +3,15 @@ name: Delivery
 
 on:
   # TODO TP 4 : à chaque push sur main, sauf quand seul le dossier deploy/ change :
-  #   push:
-  #     branches: [main]
-  #     paths-ignore: ["deploy/**"]
+  push:
+    branches: [main]
+    paths-ignore: ["deploy/**"]
   workflow_dispatch:
 
 permissions:
   contents: read
   # TODO TP 4 : le droit de publier l'image dans le registre de GitHub (packages: write)
+  packages: write
 
 jobs:
   image:
@@ -28,7 +29,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/circuitcourt
           # TODO TP 4 : « latest » ne dit pas quelle version tourne. Un tag par commit : type=sha,prefix=sha-
-          tags: type=raw,value=latest
+          tags: type=sha,prefix=sha-
       - uses: docker/build-push-action@v7
         with:
           context: .
