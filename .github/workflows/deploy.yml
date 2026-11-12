@@ -4,9 +4,9 @@ name: Deploy
 
 on:
   # TODO TP 4 : à chaque push sur main qui modifie le dossier deploy/ :
-  #   push:
-  #     branches: [main]
-  #     paths: ["deploy/**"]
+  push:
+    branches: [main]
+    paths: ["deploy/**"]
   workflow_dispatch: # et à la demande (bouton « Run workflow »)
 
 permissions:
