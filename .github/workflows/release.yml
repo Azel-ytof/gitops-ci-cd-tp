@@ -5,6 +5,8 @@ name: Release
 on:
   # TODO TP 4 : à chaque push sur main
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: write # créer le tag et la release
