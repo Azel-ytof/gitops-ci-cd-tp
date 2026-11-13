@@ -3,15 +3,14 @@ const euros = (cents) => `${(cents / 100).toFixed(2).replace(".", ",")} €`;
 
 async function loadProducts() {
   const products = await (await fetch("/api/products")).json();
-  // lodash, pour trier les produits par producteur
-  const sorted = _.sortBy(products, ["producer", "name"]);
+  const sorted = toSorted(products, ["producer", "name"]);
   const grid = document.getElementById("products");
   grid.innerHTML = "";
   for (const p of sorted) {
     const card = document.createElement("article");
     card.className = "product";
     card.innerHTML = `
-      <img src="/images/${p.image}" alt="${p.name}" />
+      <img src="/images/${p.image}" alt="${p.name}" loading="lazy" />
       <h3>${p.name}</h3>
       <p class="producer">${p.producer}</p>
       <p class="price">${euros(p.price)} <span>${p.unit}</span></p>

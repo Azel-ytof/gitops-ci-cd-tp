@@ -3,57 +3,94 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
-  # TODO TP 1 : lancer aussi le pipeline sur chaque pull request (pull_request:)
+    branches: [main]
+    paths-ignore: ["**.md", "docs/**", "deploy/**"]
   pull_request:
+    paths-ignore: ["**.md", "docs/**", "deploy/**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
-    # TODO TP 1 : tester sous Node 22 et sous Node 24 avec une matrice :
-    strategy:
-      matrix:
-        node: [24, 26]
-    # puis node-version: ${{ matrix.node }} à la place de 24
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
       - run: npm ci
-      # TODO TP 2 : npm run test:coverage, pour que le pipeline échoue sous les seuils de couverture
-      # - run: npm test
+    # anciennement test
       - run: npm run test:coverage
-
-  # TODO TP 1 : un job « lint » qui lance npm run lint (copiez le job test et changez la dernière ligne)
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-      - run: npm ci
+    # anciennement job lint
       - run: npm run lint
-
-  # TODO TP 1 : un job « build » qui attend lint et test (needs: [lint, test]), lance npm run build,
-  # puis garde ce qu'il faut pour lancer l'application avec l'action actions/upload-artifact@v7 :
-
-  build:
-    needs: [lint, test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-      - run: npm ci
+    # anciennement job build
       - run: npm run build
+    # anciennement security > secrets
+      - run: npm run gitleaks
+    # anciennement security > dependencies
+      - run: npm audit --omit=dev --audit-level=high
+    # anciennement security > http-headers
+      - name: HTTP security headers
+        run: |
+          npm start &
+          curl --retry 10 --retry-connrefused --retry-delay 1 --silent http://localhost:3000/health
+          npm run observatory -- circuitcourt.localhost:3000 60
+    # upload du resultat de coverage pour sona
       - uses: actions/upload-artifact@v7
         with:
-          name: circuitcourt
-          path: |
-            dist
-            public
-            node_modules
-            package.json
+          name: coverage
+          path: coverage/lcov.info
+          retention-days: 1
+
+  sonar:
+    needs: [verify]
+    runs-on: [self-hosted, local]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # tout l'historique : SonarQube repère le « nouveau code »
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          name: coverage
+          path: coverage
+      - uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+
+  image:
+    needs: [verify, sonar]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image name and tag
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/circuitcourt
+          tags: type=sha,prefix=sha-
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
