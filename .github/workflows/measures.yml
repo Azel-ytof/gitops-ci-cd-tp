@@ -41,4 +41,4 @@ jobs:
       - name: Weight of the artifacts
         if: always()
         # TODO TP 5 : un budget de 300 Mo pour l'image : npm run weight -- circuitcourt:measure 300
-        run: npm run weight -- circuitcourt:measure
+        run: npm run weight -- circuitcourt:measure 300
