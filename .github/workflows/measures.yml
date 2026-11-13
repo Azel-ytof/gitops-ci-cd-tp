@@ -24,6 +24,8 @@ jobs:
       - name: Start the application
         # TODO TP 5 : si GreenIT échoue avec « launchAnalyse is not defined », la CSP de helmet bloque son script.
         # Pour la mesure seulement : ajoutez ici env: CSP: report-only, et dans src/app.ts, à contentSecurityPolicy :
+        env:
+          CSP: report-only
         #   reportOnly: process.env.CSP === "report-only",
         run: |
           npm start &

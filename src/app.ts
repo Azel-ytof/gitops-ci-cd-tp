@@ -15,7 +15,14 @@ const require = createRequire(import.meta.url);
 export function createApp() {
   const app = express();
   // TODO TP 3 : les en-têtes de sécurité HTTP. npm install helmet, import helmet from "helmet", puis :
-  app.use(helmet({ contentSecurityPolicy: { directives: { upgradeInsecureRequests: null } } }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        reportOnly: process.env.CSP === "report-only",
+        directives: { upgradeInsecureRequests: null },
+      },
+    }),
+  );
   // (upgradeInsecureRequests: null, car l'application tourne en HTTP sur votre poste)
   app.use(express.json());
 
