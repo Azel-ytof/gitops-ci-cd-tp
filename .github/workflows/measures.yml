@@ -4,6 +4,9 @@ name: Measures
 on:
   # TODO TP 5 : à chaque push sur main et à chaque pull request
   workflow_dispatch:
+  push:
+    branches: [main, develop]
+  pull_request:
 
 permissions:
   contents: read
