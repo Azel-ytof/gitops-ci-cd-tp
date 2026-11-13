@@ -5,7 +5,7 @@
     "producer": "Ferme des Tilleuls",
     "price": 1500,
     "unit": "le panier (4 kg)",
-    "image": "vegetables.png",
+    "image": "vegetables.webp",
     "emoji": "🥕"
   },
   {
@@ -14,7 +14,7 @@
     "producer": "Verger de la Source",
     "price": 380,
     "unit": "le kilo",
-    "image": "apples.png",
+    "image": "apples.webp",
     "emoji": "🍎"
   },
   {
@@ -23,7 +23,7 @@
     "producer": "Verger de la Source",
     "price": 450,
     "unit": "la bouteille (1 L)",
-    "image": "juice.png",
+    "image": "juice.webp",
     "emoji": "🧃"
   },
   {
@@ -32,7 +32,7 @@
     "producer": "Miellerie du Coteau",
     "price": 990,
     "unit": "le pot (500 g)",
-    "image": "honey.png",
+    "image": "honey.webp",
     "emoji": "🍯"
   },
   {
@@ -41,7 +41,7 @@
     "producer": "Fromagerie Belle-Vue",
     "price": 1250,
     "unit": "la pièce (500 g)",
-    "image": "cheese.png",
+    "image": "cheese.webp",
     "emoji": "🧀"
   },
   {
@@ -50,7 +50,7 @@
     "producer": "Ferme des Tilleuls",
     "price": 360,
     "unit": "la boîte de 6",
-    "image": "eggs.png",
+    "image": "eggs.webp",
     "emoji": "🥚"
   },
   {
@@ -59,7 +59,7 @@
     "producer": "Fournil du Moulin",
     "price": 480,
     "unit": "la miche (1 kg)",
-    "image": "bread.png",
+    "image": "bread.webp",
     "emoji": "🍞"
   },
   {
@@ -68,7 +68,7 @@
     "producer": "Ferme des Tilleuls",
     "price": 650,
     "unit": "la barquette (500 g)",
-    "image": "strawberries.png",
+    "image": "strawberries.webp",
     "emoji": "🍓"
   }
 ]
